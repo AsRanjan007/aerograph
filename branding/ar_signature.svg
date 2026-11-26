@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+  <title>AR signature — Ashutosh Ranjan</title>
+  <defs>
+    <linearGradient id="arg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A66BFF"/>
+      <stop offset="0.55" stop-color="#7C6CF6"/>
+      <stop offset="1" stop-color="#4C8DF6"/>
+    </linearGradient>
+  </defs>
+  <g fill="url(#arg)">
+    <!-- hook: the open bowl on the left -->
+    <path d="M118 96 C 96 84, 66 92, 64 124 C 63 142, 72 154, 84 160 L 90 150 C 80 145, 76 136, 77 124 C 79 104, 98 98, 114 106 Z"/>
+    <!-- A left leg -->
+    <path d="M150 62 L 164 62 L 112 222 L 96 222 Z"/>
+    <!-- A crossbar curl joining the hook -->
+    <path d="M84 160 C 100 172, 132 170, 168 158 L 166 148 C 134 158, 104 160, 90 150 Z"/>
+    <!-- R stem (also right leg of A) -->
+    <path d="M152 62 L 168 62 L 168 222 L 152 222 Z"/>
+    <!-- R bowl -->
+    <path d="M160 62 L 196 62 C 236 62, 252 82, 252 106 C 252 132, 232 150, 196 150 L 166 150 L 166 138 L 194 138 C 222 138, 236 126, 236 106 C 236 86, 222 74, 194 74 L 160 74 Z"/>
+    <!-- R leg -->
+    <path d="M196 144 L 212 144 L 258 222 L 240 222 Z"/>
+    <!-- serifs -->
+    <rect x="86" y="218" width="36" height="6" rx="2"/>
+    <rect x="142" y="218" width="36" height="6" rx="2"/>
+    <rect x="232" y="218" width="34" height="6" rx="2"/>
+  </g>
+</svg>

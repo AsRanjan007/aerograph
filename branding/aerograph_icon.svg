@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <title>Aerograph app icon</title>
+  <defs>
+    <radialGradient id="bg" cx="0.5" cy="0.38" r="0.75">
+      <stop offset="0" stop-color="#1B1448"/>
+      <stop offset="0.6" stop-color="#0B0A22"/>
+      <stop offset="1" stop-color="#05050F"/>
+    </radialGradient>
+    <linearGradient id="trail" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#C084FC"/>
+      <stop offset="0.5" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#38BDF8"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="22" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="tip" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.35" stop-color="#BAE6FD"/>
+      <stop offset="1" stop-color="#38BDF8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1024" height="1024" rx="224" fill="url(#bg)"/>
+  <!-- faint orbit rings: the air canvas -->
+  <ellipse cx="512" cy="540" rx="360" ry="120" fill="none" stroke="#8B5CF6" stroke-opacity="0.18" stroke-width="4" transform="rotate(-18 512 540)"/>
+  <ellipse cx="512" cy="540" rx="300" ry="90" fill="none" stroke="#38BDF8" stroke-opacity="0.14" stroke-width="3" transform="rotate(-18 512 540)"/>
+  <!-- one continuous light stroke painting an "A" and looping out to the fingertip -->
+  <path filter="url(#glow)" fill="none" stroke="url(#trail)" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"
+        d="M 260 800 L 512 230 L 764 800 M 300 650 C 420 600, 560 640, 680 600 C 770 570, 820 500, 830 420"/>
+  <path fill="none" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"
+        d="M 260 800 L 512 230 L 764 800 M 300 650 C 420 600, 560 640, 680 600 C 770 570, 820 500, 830 420"/>
+  <!-- fingertip light source -->
+  <circle cx="830" cy="420" r="90" fill="url(#tip)"/>
+  <circle cx="830" cy="420" r="22" fill="#FFFFFF"/>
+  <!-- sparkles -->
+  <g fill="#E0E7FF">
+    <path d="M860 230 l10 30 30 10 -30 10 -10 30 -10 -30 -30 -10 30 -10z"/>
+    <path d="M200 360 l7 20 20 7 -20 7 -7 20 -7 -20 -20 -7 20 -7z" opacity="0.8"/>
+    <circle cx="880" cy="600" r="6" opacity="0.7"/>
+    <circle cx="170" cy="560" r="5" opacity="0.6"/>
+  </g>
+</svg>
