@@ -77,11 +77,7 @@ void main() {
   test('parses native results', () {
     final r = AeroHandTracker.parseResult({
       'hands': [
-        {
-          'landmarks': List<double>.generate(63, (i) => i / 100),
-          'handedness': 'Right',
-          'score': 0.97,
-        },
+        {'landmarks': List<double>.generate(63, (i) => i / 100), 'handedness': 'Right', 'score': 0.97},
       ],
       'imageWidth': 240,
       'imageHeight': 320,

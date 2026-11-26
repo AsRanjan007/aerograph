@@ -167,7 +167,8 @@ class _StudioScreenState extends State<StudioScreen> with TickerProviderStateMix
   void _onPointer() {
     if (_touchDrawing) return;
     final ptr = _tracker.pointer.value;
-    final wantsDown = ptr.visible &&
+    final wantsDown =
+        ptr.visible &&
         _magic == null &&
         (_s.drawGesture == DrawGesture.pinch ? ptr.pose == HandPose.pinch : ptr.pose == HandPose.point);
     if (wantsDown) {
@@ -289,6 +290,7 @@ class _StudioScreenState extends State<StudioScreen> with TickerProviderStateMix
     final build = MagicBuild.layout(art: rec.art, area: area, glow: _s.glow);
     setState(() {
       _magic = build;
+      _panelOpen = false;
       _suggestions = const [];
       _suggestionSource = null;
     });
@@ -334,9 +336,13 @@ class _StudioScreenState extends State<StudioScreen> with TickerProviderStateMix
         time: _clock.value,
       );
       await _exporter.saveToGallery(png);
-      messenger.showSnackBar(SnackBar(
-        content: Text(withPhoto && photo == null ? 'Saved artwork (camera photo unavailable)' : 'Saved to your gallery'),
-      ));
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(
+            withPhoto && photo == null ? 'Saved artwork (camera photo unavailable)' : 'Saved to your gallery',
+          ),
+        ),
+      );
     } catch (e) {
       messenger.showSnackBar(SnackBar(content: Text('Could not save: $e')));
     } finally {
@@ -355,13 +361,19 @@ class _StudioScreenState extends State<StudioScreen> with TickerProviderStateMix
             ListTile(
               leading: const Icon(Icons.photo_camera_outlined, color: Brand.orchid),
               title: const Text('Light + camera photo', style: TextStyle(color: Brand.ink)),
-              subtitle: Text('Your art over what the camera sees', style: TextStyle(color: Brand.mist.withValues(alpha: 0.7))),
+              subtitle: Text(
+                'Your art over what the camera sees',
+                style: TextStyle(color: Brand.mist.withValues(alpha: 0.7)),
+              ),
               onTap: () => Navigator.pop(context, true),
             ),
             ListTile(
               leading: const Icon(Icons.auto_awesome_outlined, color: Brand.sky),
               title: const Text('Light only', style: TextStyle(color: Brand.ink)),
-              subtitle: Text('Your art on a night background', style: TextStyle(color: Brand.mist.withValues(alpha: 0.7))),
+              subtitle: Text(
+                'Your art on a night background',
+                style: TextStyle(color: Brand.mist.withValues(alpha: 0.7)),
+              ),
               onTap: () => Navigator.pop(context, false),
             ),
           ],
@@ -390,9 +402,7 @@ class _StudioScreenState extends State<StudioScreen> with TickerProviderStateMix
           '• Imagine: tell Aerograph an idea and watch it appear',
           style: TextStyle(color: Brand.mist.withValues(alpha: 0.9), height: 1.5),
         ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Start painting')),
-        ],
+        actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('Start painting'))],
       ),
     );
     _s.update((x) => x.onboarded = true);
@@ -412,7 +422,9 @@ class _StudioScreenState extends State<StudioScreen> with TickerProviderStateMix
         fit: StackFit.expand,
         children: [
           _CameraBackground(tracker: _tracker),
-          IgnorePointer(child: ColoredBox(color: Colors.black.withValues(alpha: _s.cameraDim))),
+          IgnorePointer(
+            child: ColoredBox(color: Colors.black.withValues(alpha: _s.cameraDim)),
+          ),
           // Touch drawing too, for when you'd rather use a finger on glass.
           GestureDetector(
             behavior: HitTestBehavior.opaque,
@@ -465,7 +477,10 @@ class _StudioScreenState extends State<StudioScreen> with TickerProviderStateMix
                 if (_noHandSeconds >= 3 && _tracker.status == TrackerStatus.running && _magic == null)
                   _Hint(gesture: _s.drawGesture),
                 if (_tracker.status != TrackerStatus.running && _tracker.status != TrackerStatus.starting)
-                  _CameraProblem(tracker: _tracker, onRetry: () => _tracker.start(front: _s.frontCamera)),
+                  _CameraProblem(
+                    tracker: _tracker,
+                    onRetry: () => _tracker.start(front: _s.frontCamera),
+                  ),
                 const Spacer(),
                 if (_suggestions.isNotEmpty)
                   _SuggestionStrip(
@@ -513,9 +528,7 @@ class _CameraBackground extends StatelessWidget {
     final c = tracker.controller;
     if (c == null || !c.value.isInitialized) {
       return const DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: RadialGradient(colors: [Color(0xFF15103A), Brand.night], radius: 1.1),
-        ),
+        decoration: BoxDecoration(gradient: RadialGradient(colors: [Color(0xFF15103A), Brand.night], radius: 1.1)),
       );
     }
     final ps = c.value.previewSize!;
@@ -552,23 +565,41 @@ class _TopBar extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(width: 34, height: 34, child: CustomPaint(painter: AerographMarkPainter())),
+          if (MediaQuery.of(context).size.width >= 430) ...[const SizedBox(width: 8), const Wordmark(size: 20)],
           const SizedBox(width: 8),
-          const Wordmark(size: 20),
-          const Spacer(),
-          _Glass(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(width: 8, height: 8, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
-                  const SizedBox(width: 6),
-                  Text(label, style: const TextStyle(color: Brand.ink, fontSize: 12)),
-                  if (tracker.status == TrackerStatus.running && tracker.fps > 0) ...[
-                    const SizedBox(width: 6),
-                    Text('${tracker.fps.round()} fps', style: TextStyle(color: Brand.mist.withValues(alpha: 0.6), fontSize: 11)),
-                  ],
-                ],
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: _Glass(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 8,
+                        height: 8,
+                        decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+                      ),
+                      const SizedBox(width: 6),
+                      Flexible(
+                        child: Text(
+                          label,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(color: Brand.ink, fontSize: 12),
+                        ),
+                      ),
+                      if (tracker.status == TrackerStatus.running && tracker.fps > 0) ...[
+                        const SizedBox(width: 6),
+                        Text(
+                          '${tracker.fps.round()} fps',
+                          style: TextStyle(color: Brand.mist.withValues(alpha: 0.6), fontSize: 11),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
@@ -595,13 +626,13 @@ class _Glass extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
-        decoration: BoxDecoration(
-          color: Brand.night.withValues(alpha: 0.55),
-          borderRadius: BorderRadius.circular(radius),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
-        ),
-        child: child,
-      );
+    decoration: BoxDecoration(
+      color: Brand.night.withValues(alpha: 0.55),
+      borderRadius: BorderRadius.circular(radius),
+      border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+    ),
+    child: child,
+  );
 }
 
 class _Hint extends StatelessWidget {
@@ -610,27 +641,27 @@ class _Hint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-        child: _Glass(
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Row(
-              children: [
-                Icon(gesture == DrawGesture.pinch ? Icons.pinch_outlined : Icons.back_hand_outlined, color: Brand.orchid),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    gesture == DrawGesture.pinch
-                        ? 'Hold your hand up to the camera and pinch to paint.'
-                        : 'Hold your hand up to the camera and raise your index finger to paint.',
-                    style: const TextStyle(color: Brand.ink, fontSize: 13),
-                  ),
-                ),
-              ],
+    padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+    child: _Glass(
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          children: [
+            Icon(gesture == DrawGesture.pinch ? Icons.pinch_outlined : Icons.back_hand_outlined, color: Brand.orchid),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                gesture == DrawGesture.pinch
+                    ? 'Hold your hand up to the camera and pinch to paint.'
+                    : 'Hold your hand up to the camera and raise your index finger to paint.',
+                style: const TextStyle(color: Brand.ink, fontSize: 13),
+              ),
             ),
-          ),
+          ],
         ),
-      );
+      ),
+    ),
+  );
 }
 
 class _CameraProblem extends StatelessWidget {
@@ -641,9 +672,11 @@ class _CameraProblem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final msg = switch (tracker.status) {
-      TrackerStatus.noPermission => 'Aerograph needs the camera to see your fingertip. Allow camera access in Settings, then retry.',
+      TrackerStatus.noPermission =>
+        'Aerograph needs the camera to see your fingertip. Allow camera access in Settings, then retry.',
       TrackerStatus.noCamera => 'No camera found. You can still paint by touching the screen.',
-      _ => 'The camera could not start${tracker.errorMessage == null ? '' : ': ${tracker.errorMessage}'}. You can still paint by touch.',
+      _ =>
+        'The camera could not start${tracker.errorMessage == null ? '' : ': ${tracker.errorMessage}'}. You can still paint by touch.',
     };
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
@@ -654,7 +687,9 @@ class _CameraProblem extends StatelessWidget {
             children: [
               const Icon(Icons.videocam_off_outlined, color: Color(0xFFFF8FA3)),
               const SizedBox(width: 10),
-              Expanded(child: Text(msg, style: const TextStyle(color: Brand.ink, fontSize: 13))),
+              Expanded(
+                child: Text(msg, style: const TextStyle(color: Brand.ink, fontSize: 13)),
+              ),
               TextButton(onPressed: onRetry, child: const Text('Retry')),
             ],
           ),
@@ -716,7 +751,9 @@ class _SuggestionStrip extends StatelessWidget {
                         ),
                         child: Column(
                           children: [
-                            Expanded(child: CustomPaint(size: Size.infinite, painter: ArtPreviewPainter(r.art))),
+                            Expanded(
+                              child: CustomPaint(size: Size.infinite, painter: ArtPreviewPainter(r.art)),
+                            ),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(4, 0, 4, 6),
                               child: Text(
@@ -820,17 +857,27 @@ class _LightPanel extends StatelessWidget {
   }
 
   Widget _row(IconData icon, String label, double v, double min, double max, ValueChanged<double> onChanged) => Row(
-        children: [
-          Icon(icon, color: Brand.mist, size: 18),
-          const SizedBox(width: 6),
-          SizedBox(width: 40, child: Text(label, style: const TextStyle(color: Brand.ink, fontSize: 12))),
-          Expanded(child: Slider(value: v.clamp(min, max), min: min, max: max, onChanged: onChanged)),
-        ],
-      );
+    children: [
+      Icon(icon, color: Brand.mist, size: 18),
+      const SizedBox(width: 6),
+      SizedBox(
+        width: 40,
+        child: Text(label, style: const TextStyle(color: Brand.ink, fontSize: 12)),
+      ),
+      Expanded(
+        child: Slider(value: v.clamp(min, max), min: min, max: max, onChanged: onChanged),
+      ),
+    ],
+  );
 }
 
 class _BottomBar extends StatelessWidget {
-  const _BottomBar({required this.settings, required this.panelOpen, required this.onTogglePanel, required this.onImagine});
+  const _BottomBar({
+    required this.settings,
+    required this.panelOpen,
+    required this.onTogglePanel,
+    required this.onImagine,
+  });
   final AppSettings settings;
   final bool panelOpen;
   final VoidCallback onTogglePanel;
@@ -862,7 +909,10 @@ class _BottomBar extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    Text(settings.brush.label, style: const TextStyle(color: Brand.ink, fontWeight: FontWeight.w500)),
+                    Text(
+                      settings.brush.label,
+                      style: const TextStyle(color: Brand.ink, fontWeight: FontWeight.w500),
+                    ),
                     const SizedBox(width: 4),
                     Icon(panelOpen ? Icons.expand_more : Icons.expand_less, color: Brand.mist, size: 18),
                   ],
@@ -889,7 +939,10 @@ class _BottomBar extends StatelessWidget {
                     children: [
                       Icon(Icons.auto_awesome, color: Colors.white, size: 20),
                       SizedBox(width: 8),
-                      Text('Imagine', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15)),
+                      Text(
+                        'Imagine',
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15),
+                      ),
                     ],
                   ),
                 ),
@@ -920,10 +973,10 @@ class _SideRail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget btn(IconData icon, String tip, VoidCallback? onTap) => IconButton(
-          tooltip: tip,
-          onPressed: onTap,
-          icon: Icon(icon, color: onTap == null ? Colors.white24 : Brand.ink),
-        );
+      tooltip: tip,
+      onPressed: onTap,
+      icon: Icon(icon, color: onTap == null ? Colors.white24 : Brand.ink),
+    );
     return _Glass(
       radius: 24,
       child: Column(

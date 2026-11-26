@@ -37,9 +37,7 @@ class AppSettings extends ChangeNotifier {
 
   /// In-memory settings for tests and previews.
   @visibleForTesting
-  AppSettings.memory()
-      : _prefs = null,
-        _secure = null;
+  AppSettings.memory() : _prefs = null, _secure = null;
 
   final SharedPreferences? _prefs;
   final FlutterSecureStorage? _secure;
@@ -77,7 +75,10 @@ class AppSettings extends ChangeNotifier {
     glow = p.getDouble('glow') ?? glow;
     lightMode = LightMode.byName(p.getString('lightMode'));
     cameraDim = p.getDouble('cameraDim') ?? cameraDim;
-    drawGesture = DrawGesture.values.firstWhere((g) => g.name == p.getString('drawGesture'), orElse: () => DrawGesture.point);
+    drawGesture = DrawGesture.values.firstWhere(
+      (g) => g.name == p.getString('drawGesture'),
+      orElse: () => DrawGesture.point,
+    );
     mirror = MirrorMode.values.firstWhere((m) => m.name == p.getString('mirror'), orElse: () => MirrorMode.auto);
     depthWidth = p.getBool('depthWidth') ?? depthWidth;
     showSkeleton = p.getBool('showSkeleton') ?? showSkeleton;

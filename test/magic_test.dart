@@ -13,8 +13,10 @@ List<Offset> circle({double r = 100, int n = 60, double noise = 0}) {
   final rnd = math.Random(1);
   return [
     for (var i = 0; i <= n; i++)
-      Offset(200 + r * math.cos(2 * math.pi * i / n) + (rnd.nextDouble() - 0.5) * noise,
-          200 + r * math.sin(2 * math.pi * i / n) + (rnd.nextDouble() - 0.5) * noise),
+      Offset(
+        200 + r * math.cos(2 * math.pi * i / n) + (rnd.nextDouble() - 0.5) * noise,
+        200 + r * math.sin(2 * math.pi * i / n) + (rnd.nextDouble() - 0.5) * noise,
+      ),
   ];
 }
 
@@ -73,7 +75,7 @@ void main() {
       final recs = r.fromImagination('a moon over the mountains');
       expect(recs.first.reason, contains('scene'));
       expect(recs.first.title, contains('Moon'));
-      expect(recs.first.title, contains('Range'));
+      expect(recs.first.title, contains('Mountain'));
       expect(recs.first.art.aspect, closeTo(0.75, 1e-9));
     });
 
@@ -115,12 +117,22 @@ void main() {
     });
 
     test('wave', () {
-      expect(sr.recognize([for (var i = 0; i <= 80; i++) Offset(i * 5.0, 200 + 40 * math.sin(i / 80 * 4 * math.pi))]).shape, 'wave');
+      expect(
+        sr.recognize([for (var i = 0; i <= 80; i++) Offset(i * 5.0, 200 + 40 * math.sin(i / 80 * 4 * math.pi))]).shape,
+        'wave',
+      );
     });
 
     test('zigzag', () {
       final z = <Offset>[];
-      const peaks = [Offset(0, 200), Offset(60, 100), Offset(120, 200), Offset(180, 100), Offset(240, 200), Offset(300, 100)];
+      const peaks = [
+        Offset(0, 200),
+        Offset(60, 100),
+        Offset(120, 200),
+        Offset(180, 100),
+        Offset(240, 200),
+        Offset(300, 100),
+      ];
       for (var i = 0; i < peaks.length - 1; i++) {
         for (var k = 0; k < 12; k++) {
           z.add(Offset.lerp(peaks[i], peaks[i + 1], k / 12)!);
@@ -187,8 +199,10 @@ void main() {
     });
 
     test('rejects empty drawings', () {
-      expect(() => ClaudeDreamer.parseArt('{"title":"x","brush":"neon","palette":[],"strokes":[]}'),
-          throwsA(isA<DreamException>()));
+      expect(
+        () => ClaudeDreamer.parseArt('{"title":"x","brush":"neon","palette":[],"strokes":[]}'),
+        throwsA(isA<DreamException>()),
+      );
       expect(() => ClaudeDreamer.parseArt('not json'), throwsA(isA<DreamException>()));
     });
   });

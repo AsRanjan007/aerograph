@@ -23,10 +23,15 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
   void _go() {
     if (!mounted) return;
-    Navigator.of(context).pushReplacement(PageRouteBuilder<void>(
-      transitionDuration: const Duration(milliseconds: 500),
-      pageBuilder: (_, a, _) => FadeTransition(opacity: a, child: StudioScreen(settings: widget.settings)),
-    ));
+    Navigator.of(context).pushReplacement(
+      PageRouteBuilder<void>(
+        transitionDuration: const Duration(milliseconds: 500),
+        pageBuilder: (_, a, _) => FadeTransition(
+          opacity: a,
+          child: StudioScreen(settings: widget.settings),
+        ),
+      ),
+    );
   }
 
   @override
@@ -78,7 +83,10 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                   left: 0,
                   right: 0,
                   bottom: 48,
-                  child: Opacity(opacity: credit, child: const Center(child: AuthorCredit())),
+                  child: Opacity(
+                    opacity: credit,
+                    child: const Center(child: AuthorCredit()),
+                  ),
                 ),
               ],
             );

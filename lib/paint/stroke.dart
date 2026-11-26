@@ -5,8 +5,8 @@ import 'brush.dart';
 
 class Stroke {
   Stroke({required this.style, List<Offset>? points, this.magic = false, int? seed})
-      : points = points ?? <Offset>[],
-        seed = seed ?? math.Random().nextInt(1 << 30);
+    : points = points ?? <Offset>[],
+      seed = seed ?? math.Random().nextInt(1 << 30);
 
   final BrushStyle style;
   final List<Offset> points;

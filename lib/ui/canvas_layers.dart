@@ -16,12 +16,8 @@ const _renderer = StrokeRenderer();
 /// Finished strokes. In steady light mode the strokes are recorded into a
 /// cached picture so the expensive blurs are only replayed, not rebuilt.
 class ArtLayerPainter extends CustomPainter {
-  ArtLayerPainter({
-    required this.history,
-    required this.mode,
-    required this.clock,
-    required Listenable repaint,
-  }) : super(repaint: repaint);
+  ArtLayerPainter({required this.history, required this.mode, required this.clock, required Listenable repaint})
+    : super(repaint: repaint);
 
   final StrokeHistory history;
   final LightMode mode;
@@ -135,12 +131,14 @@ class LiveLayerPainter extends CustomPainter {
       c,
       r * 2.2,
       Paint()
-        ..shader = RadialGradient(colors: [
-          Colors.white,
-          const Color(0xFFBAE6FD).withValues(alpha: 0.7),
-          const Color(0xFF8B5CF6).withValues(alpha: 0),
-        ], stops: const [0, 0.3, 1])
-            .createShader(Rect.fromCircle(center: c, radius: r * 2.2)),
+        ..shader = RadialGradient(
+          colors: [
+            Colors.white,
+            const Color(0xFFBAE6FD).withValues(alpha: 0.7),
+            const Color(0xFF8B5CF6).withValues(alpha: 0),
+          ],
+          stops: const [0, 0.3, 1],
+        ).createShader(Rect.fromCircle(center: c, radius: r * 2.2)),
     );
   }
 

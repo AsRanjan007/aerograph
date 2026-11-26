@@ -138,8 +138,11 @@ class _ImagineSheetState extends State<ImagineSheet> {
                   children: [
                     const Icon(Icons.auto_awesome, color: Brand.orchid),
                     const SizedBox(width: 10),
-                    Text('What do you imagine?',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Brand.ink, fontWeight: FontWeight.w600)),
+                    Text(
+                      'What do you imagine?',
+                      style: Theme.of(context).textTheme.titleLarge
+                          ?.copyWith(color: Brand.ink, fontWeight: FontWeight.w600),
+                    ),
                   ],
                 ),
               ),
@@ -159,7 +162,10 @@ class _ImagineSheetState extends State<ImagineSheet> {
                     prefixIcon: const Icon(Icons.lightbulb_outline, color: Brand.mist),
                     suffixIcon: _text.text.isEmpty
                         ? null
-                        : IconButton(icon: const Icon(Icons.close, color: Brand.mist), onPressed: _text.clear),
+                        : IconButton(
+                            icon: const Icon(Icons.close, color: Brand.mist),
+                            onPressed: _text.clear,
+                          ),
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
                   ),
                 ),
@@ -204,10 +210,8 @@ class _ImagineSheetState extends State<ImagineSheet> {
                     childAspectRatio: 0.82,
                   ),
                   itemCount: recs.length,
-                  itemBuilder: (context, i) => _RecommendationCard(
-                    rec: recs[i],
-                    onTap: () => Navigator.of(context).pop(recs[i]),
-                  ),
+                  itemBuilder: (context, i) =>
+                      _RecommendationCard(rec: recs[i], onTap: () => Navigator.of(context).pop(recs[i])),
                 ),
               ),
             ],
@@ -238,7 +242,11 @@ class _DreamBanner extends StatelessWidget {
               child: TextButton.icon(
                 onPressed: dreaming ? null : onDream,
                 icon: dreaming
-                    ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                    ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                      )
                     : const Icon(Icons.auto_fix_high, color: Colors.white),
                 label: Text(
                   dreaming ? 'Dreaming it up…' : 'Dream anything with Claude',

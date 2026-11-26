@@ -24,14 +24,16 @@ class MagicBuild {
       if (p.points.length < 2) continue;
       final color = art.palette.colors[p.color % art.palette.colors.length];
       final style = BrushStyle(kind: art.brush, color: color, width: base * p.width, glow: glow);
-      strokes.add(Stroke(
-        style: style,
-        magic: true,
-        seed: rnd.nextInt(1 << 30),
-        points: densify([
-          for (final o in p.points) Offset(target.left + o.dx * target.width, target.top + o.dy * target.height),
-        ], base * 1.5),
-      ));
+      strokes.add(
+        Stroke(
+          style: style,
+          magic: true,
+          seed: rnd.nextInt(1 << 30),
+          points: densify([
+            for (final o in p.points) Offset(target.left + o.dx * target.width, target.top + o.dy * target.height),
+          ], base * 1.5),
+        ),
+      );
     }
     final cumulative = <double>[];
     var total = 0.0;

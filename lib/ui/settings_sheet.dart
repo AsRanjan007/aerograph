@@ -10,11 +10,11 @@ class SettingsSheet extends StatefulWidget {
   final AppSettings settings;
 
   static Future<void> show(BuildContext context, AppSettings settings) => showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        builder: (_) => SettingsSheet(settings: settings),
-      );
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    builder: (_) => SettingsSheet(settings: settings),
+  );
 
   @override
   State<SettingsSheet> createState() => _SettingsSheetState();
@@ -56,7 +56,11 @@ class _SettingsSheetState extends State<SettingsSheet> {
               shrinkWrap: true,
               padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
               children: [
-                Text('Settings', style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Brand.ink, fontWeight: FontWeight.w600)),
+                Text(
+                  'Settings',
+                  style: Theme.of(context).textTheme.titleLarge
+                      ?.copyWith(color: Brand.ink, fontWeight: FontWeight.w600),
+                ),
                 const _Section('Air brush'),
                 Text('Paint gesture', style: _label),
                 const SizedBox(height: 6),
@@ -69,14 +73,32 @@ class _SettingsSheetState extends State<SettingsSheet> {
                   padding: const EdgeInsets.only(top: 6),
                   child: Text(s.drawGesture.help, style: _help),
                 ),
-                _slider('Steadiness', s.smoothing, 0, 1, (v) => s.update((x) => x.smoothing = v),
-                    help: 'Higher smooths shaky hands; lower follows fast motion more tightly.'),
-                _switch('Depth-sensitive width', s.depthWidth, (v) => s.update((x) => x.depthWidth = v),
-                    help: 'Bring your hand closer to paint thicker light.'),
-                _switch('Open palm to undo', s.palmUndo, (v) => s.update((x) => x.palmUndo = v),
-                    help: 'Hold an open palm for about a second to undo the last stroke.'),
-                _switch('Suggest art from sketches', s.sketchSuggestions, (v) => s.update((x) => x.sketchSuggestions = v),
-                    help: 'Draw a circle, triangle, wave or spiral and Aerograph offers to transform it.'),
+                _slider(
+                  'Steadiness',
+                  s.smoothing,
+                  0,
+                  1,
+                  (v) => s.update((x) => x.smoothing = v),
+                  help: 'Higher smooths shaky hands; lower follows fast motion more tightly.',
+                ),
+                _switch(
+                  'Depth-sensitive width',
+                  s.depthWidth,
+                  (v) => s.update((x) => x.depthWidth = v),
+                  help: 'Bring your hand closer to paint thicker light.',
+                ),
+                _switch(
+                  'Open palm to undo',
+                  s.palmUndo,
+                  (v) => s.update((x) => x.palmUndo = v),
+                  help: 'Hold an open palm for about a second to undo the last stroke.',
+                ),
+                _switch(
+                  'Suggest art from sketches',
+                  s.sketchSuggestions,
+                  (v) => s.update((x) => x.sketchSuggestions = v),
+                  help: 'Draw a circle, triangle, wave or spiral and Aerograph offers to transform it.',
+                ),
                 _switch('Show hand skeleton', s.showSkeleton, (v) => s.update((x) => x.showSkeleton = v)),
                 const _Section('Light'),
                 Text('Light mode', style: _label),
@@ -92,8 +114,14 @@ class _SettingsSheetState extends State<SettingsSheet> {
                       ),
                   ],
                 ),
-                _slider('Camera dim', s.cameraDim, 0, 0.9, (v) => s.update((x) => x.cameraDim = v),
-                    help: 'Darken the camera so your light pops.'),
+                _slider(
+                  'Camera dim',
+                  s.cameraDim,
+                  0,
+                  0.9,
+                  (v) => s.update((x) => x.cameraDim = v),
+                  help: 'Darken the camera so your light pops.',
+                ),
                 const _Section('Camera'),
                 Text('Mirror tracking', style: _label),
                 const SizedBox(height: 6),
@@ -168,9 +196,7 @@ class _SettingsSheetState extends State<SettingsSheet> {
                     labelText: 'Model',
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
                   ),
-                  items: [
-                    for (final e in _models.entries) DropdownMenuItem(value: e.key, child: Text(e.value)),
-                  ],
+                  items: [for (final e in _models.entries) DropdownMenuItem(value: e.key, child: Text(e.value))],
                   onChanged: (v) => s.update((x) => x.claudeModel = v ?? x.claudeModel),
                 ),
                 const SizedBox(height: 20),
@@ -224,10 +250,10 @@ class _Section extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(top: 22, bottom: 8),
-        child: Text(
-          title.toUpperCase(),
-          style: const TextStyle(color: Brand.orchid, fontSize: 12, letterSpacing: 1.6, fontWeight: FontWeight.w600),
-        ),
-      );
+    padding: const EdgeInsets.only(top: 22, bottom: 8),
+    child: Text(
+      title.toUpperCase(),
+      style: const TextStyle(color: Brand.orchid, fontSize: 12, letterSpacing: 1.6, fontWeight: FontWeight.w600),
+    ),
+  );
 }

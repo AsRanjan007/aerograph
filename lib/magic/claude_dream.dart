@@ -19,7 +19,7 @@ class DreamException implements Exception {
 /// Everything else in Aerograph works offline without it.
 class ClaudeDreamer {
   ClaudeDreamer({required this.apiKey, this.model = defaultModel, http.Client? client})
-      : _client = client ?? http.Client();
+    : _client = client ?? http.Client();
 
   static const defaultModel = 'claude-opus-5-5';
   static const _endpoint = 'https://api.anthropic.com/v1/messages';
@@ -45,40 +45,40 @@ Rules:
 - title: 2 to 4 words.''';
 
   static Map<String, Object?> get _schema => {
-        'type': 'object',
-        'additionalProperties': false,
-        'required': ['title', 'brush', 'palette', 'strokes'],
-        'properties': {
-          'title': {'type': 'string'},
-          'brush': {
-            'type': 'string',
-            'enum': ['neon', 'glow', 'ink', 'sparkle', 'rainbow', 'comet'],
-          },
-          'palette': {
-            'type': 'array',
-            'items': {'type': 'string'},
-          },
-          'strokes': {
-            'type': 'array',
-            'items': {
-              'type': 'object',
-              'additionalProperties': false,
-              'required': ['color', 'width', 'points'],
-              'properties': {
-                'color': {'type': 'integer'},
-                'width': {'type': 'number'},
-                'points': {
-                  'type': 'array',
-                  'items': {
-                    'type': 'array',
-                    'items': {'type': 'number'},
-                  },
-                },
+    'type': 'object',
+    'additionalProperties': false,
+    'required': ['title', 'brush', 'palette', 'strokes'],
+    'properties': {
+      'title': {'type': 'string'},
+      'brush': {
+        'type': 'string',
+        'enum': ['neon', 'glow', 'ink', 'sparkle', 'rainbow', 'comet'],
+      },
+      'palette': {
+        'type': 'array',
+        'items': {'type': 'string'},
+      },
+      'strokes': {
+        'type': 'array',
+        'items': {
+          'type': 'object',
+          'additionalProperties': false,
+          'required': ['color', 'width', 'points'],
+          'properties': {
+            'color': {'type': 'integer'},
+            'width': {'type': 'number'},
+            'points': {
+              'type': 'array',
+              'items': {
+                'type': 'array',
+                'items': {'type': 'number'},
               },
             },
           },
         },
-      };
+      },
+    },
+  };
 
   Future<MagicArt> dream(String idea) async {
     final body = jsonEncode({
@@ -154,9 +154,7 @@ Rules:
     } on FormatException {
       throw DreamException('Claude returned an unreadable drawing.');
     }
-    final colors = <Color>[
-      for (final h in (m['palette'] as List<Object?>? ?? const []).whereType<String>()) ?_hex(h),
-    ];
+    final colors = <Color>[for (final h in (m['palette'] as List<Object?>? ?? const []).whereType<String>()) ?_hex(h)];
     if (colors.isEmpty) colors.addAll(LightPalette.cosmic.colors);
 
     final paths = <ArtPath>[];

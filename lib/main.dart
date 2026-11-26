@@ -19,11 +19,7 @@ class AerographApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = ColorScheme.fromSeed(
-      seedColor: Brand.violet,
-      brightness: Brightness.dark,
-      surface: Brand.night,
-    );
+    final scheme = ColorScheme.fromSeed(seedColor: Brand.violet, brightness: Brightness.dark, surface: Brand.night);
     return MaterialApp(
       title: 'Aerograph',
       debugShowCheckedModeBanner: false,

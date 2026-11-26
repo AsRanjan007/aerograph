@@ -7,11 +7,7 @@ enum FrameFormat { nv21, bgra8888 }
 /// upright (rotated) frame. `x`/`y` are in [0, 1], `z` is relative depth
 /// (smaller = closer to the camera), wrist-origin, roughly in x-units.
 class TrackedHand {
-  TrackedHand({
-    required this.landmarks,
-    required this.handedness,
-    required this.score,
-  });
+  TrackedHand({required this.landmarks, required this.handedness, required this.score});
 
   /// 21 points × (x, y, z).
   final List<Landmark> landmarks;
@@ -28,8 +24,7 @@ class Landmark {
   final double z;
 
   @override
-  String toString() =>
-      'Landmark(${x.toStringAsFixed(3)}, ${y.toStringAsFixed(3)}, ${z.toStringAsFixed(3)})';
+  String toString() => 'Landmark(${x.toStringAsFixed(3)}, ${y.toStringAsFixed(3)}, ${z.toStringAsFixed(3)})';
 }
 
 class HandFrameResult {
@@ -50,8 +45,7 @@ class HandFrameResult {
 
 /// Thin bridge to the native MediaPipe Hand Landmarker.
 class AeroHandTracker {
-  AeroHandTracker({MethodChannel? channel})
-      : _channel = channel ?? const MethodChannel('aero_hand_tracker');
+  AeroHandTracker({MethodChannel? channel}) : _channel = channel ?? const MethodChannel('aero_hand_tracker');
 
   final MethodChannel _channel;
   bool _ready = false;
@@ -117,11 +111,13 @@ class AeroHandTracker {
         for (var i = 0; i + 2 < pts.length; i += 3)
           Landmark(pts[i].toDouble(), pts[i + 1].toDouble(), pts[i + 2].toDouble()),
       ];
-      hands.add(TrackedHand(
-        landmarks: lms,
-        handedness: (m['handedness'] as String?) ?? 'Unknown',
-        score: ((m['score'] as num?) ?? 0).toDouble(),
-      ));
+      hands.add(
+        TrackedHand(
+          landmarks: lms,
+          handedness: (m['handedness'] as String?) ?? 'Unknown',
+          score: ((m['score'] as num?) ?? 0).toDouble(),
+        ),
+      );
     }
     return HandFrameResult(
       hands: hands,

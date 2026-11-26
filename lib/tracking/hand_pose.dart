@@ -13,11 +13,27 @@ abstract final class HandIdx {
 
   /// Bone pairs for drawing a skeleton overlay.
   static const bones = <(int, int)>[
-    (0, 1), (1, 2), (2, 3), (3, 4),
-    (0, 5), (5, 6), (6, 7), (7, 8),
-    (5, 9), (9, 10), (10, 11), (11, 12),
-    (9, 13), (13, 14), (14, 15), (15, 16),
-    (13, 17), (0, 17), (17, 18), (18, 19), (19, 20),
+    (0, 1),
+    (1, 2),
+    (2, 3),
+    (3, 4),
+    (0, 5),
+    (5, 6),
+    (6, 7),
+    (7, 8),
+    (5, 9),
+    (9, 10),
+    (10, 11),
+    (11, 12),
+    (9, 13),
+    (13, 14),
+    (14, 15),
+    (15, 16),
+    (13, 17),
+    (0, 17),
+    (17, 18),
+    (18, 19),
+    (19, 20),
   ];
 }
 
@@ -74,8 +90,7 @@ PoseReading classifyPose(List<Landmark> lm, {double pinchThreshold = 0.35}) {
   final middle = ext(HandIdx.middleTip, HandIdx.middlePip);
   final ring = ext(HandIdx.ringTip, HandIdx.ringPip);
   final pinky = ext(HandIdx.pinkyTip, HandIdx.pinkyPip);
-  final thumb = _d(lm[HandIdx.thumbTip], lm[HandIdx.pinkyMcp]) >
-      _d(lm[HandIdx.thumbIp], lm[HandIdx.pinkyMcp]) * 1.08;
+  final thumb = _d(lm[HandIdx.thumbTip], lm[HandIdx.pinkyMcp]) > _d(lm[HandIdx.thumbIp], lm[HandIdx.pinkyMcp]) * 1.08;
 
   final size = math.max(1e-6, _d(w, lm[HandIdx.middleMcp]));
   final pinchRatio = _d(lm[HandIdx.thumbTip], lm[HandIdx.indexTip]) / size;

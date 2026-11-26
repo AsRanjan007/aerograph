@@ -38,7 +38,9 @@ void main() {
   });
 
   test('clear is undoable via redo', () {
-    final h = StrokeHistory()..add(line(0))..add(line(1));
+    final h = StrokeHistory()
+      ..add(line(0))
+      ..add(line(1));
     h.clear();
     expect(h.strokes, isEmpty);
     h.redo();

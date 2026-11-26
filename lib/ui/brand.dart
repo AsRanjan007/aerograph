@@ -109,12 +109,10 @@ class AerographMarkPainter extends CustomPainter {
         head,
         90,
         Paint()
-          ..shader = RadialGradient(colors: [
-            Colors.white,
-            const Color(0xFFBAE6FD),
-            Brand.sky.withValues(alpha: 0),
-          ], stops: const [0, 0.35, 1])
-              .createShader(Rect.fromCircle(center: head, radius: 90)),
+          ..shader = RadialGradient(
+            colors: [Colors.white, const Color(0xFFBAE6FD), Brand.sky.withValues(alpha: 0)],
+            stops: const [0, 0.35, 1],
+          ).createShader(Rect.fromCircle(center: head, radius: 90)),
       );
       canvas.drawCircle(head, 22, Paint()..color = Colors.white);
     }
@@ -257,7 +255,11 @@ class AuthorCredit extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(width: mark * 1.25, height: mark, child: const CustomPaint(painter: ArSignaturePainter())),
+        SizedBox(
+          width: mark * 1.25,
+          height: mark,
+          child: const CustomPaint(painter: ArSignaturePainter()),
+        ),
         const SizedBox(width: 10),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -265,7 +267,11 @@ class AuthorCredit extends StatelessWidget {
           children: [
             Text(
               'Designed & developed by',
-              style: TextStyle(color: Brand.mist.withValues(alpha: 0.8), fontSize: compact ? 10 : 12, letterSpacing: 0.3),
+              style: TextStyle(
+                color: Brand.mist.withValues(alpha: 0.8),
+                fontSize: compact ? 10 : 12,
+                letterSpacing: 0.3,
+              ),
             ),
             Text(
               'Ashutosh Ranjan',

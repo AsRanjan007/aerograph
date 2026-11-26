@@ -27,12 +27,7 @@ class MagicArt {
 enum RecommendationSource { imagination, sketch, mood, ai }
 
 class Recommendation {
-  const Recommendation({
-    required this.art,
-    required this.reason,
-    required this.score,
-    required this.source,
-  });
+  const Recommendation({required this.art, required this.reason, required this.score, required this.source});
 
   final MagicArt art;
 
@@ -53,31 +48,126 @@ class Recommender {
   final List<ArtTemplate> library;
 
   static const _stop = {
-    'a', 'an', 'the', 'and', 'or', 'of', 'in', 'on', 'at', 'to', 'with', 'my', 'me', 'i', 'is', 'it',
-    'for', 'over', 'under', 'by', 'from', 'some', 'very', 'want', 'draw', 'paint', 'make', 'show', 'like',
-    'that', 'this', 'into', 'above', 'below', 'near', 'big', 'small', 'little', 'beautiful', 'please',
-    'glowing', 'glow', 'neon', 'light', 'lights', 'shiny', 'bright', 'can', 'you', 'imagine',
+    'a',
+    'an',
+    'the',
+    'and',
+    'or',
+    'of',
+    'in',
+    'on',
+    'at',
+    'to',
+    'with',
+    'my',
+    'me',
+    'i',
+    'is',
+    'it',
+    'for',
+    'over',
+    'under',
+    'by',
+    'from',
+    'some',
+    'very',
+    'want',
+    'draw',
+    'paint',
+    'make',
+    'show',
+    'like',
+    'that',
+    'this',
+    'into',
+    'above',
+    'below',
+    'near',
+    'big',
+    'small',
+    'little',
+    'beautiful',
+    'please',
+    'glowing',
+    'glow',
+    'neon',
+    'light',
+    'lights',
+    'shiny',
+    'bright',
+    'can',
+    'you',
+    'imagine',
   };
 
   /// Mood words → palette. Applied when the user describes a feeling or time.
   static const Map<String, LightPalette> _moods = {
-    'night': LightPalette.cosmic, 'dark': LightPalette.cosmic, 'space': LightPalette.cosmic, 'mystic': LightPalette.cosmic,
-    'cosmic': LightPalette.cosmic, 'galaxy': LightPalette.cosmic, 'midnight': LightPalette.cosmic, 'dream': LightPalette.cosmic,
-    'sunset': LightPalette.sunset, 'warm': LightPalette.sunset, 'evening': LightPalette.sunset, 'summer': LightPalette.sunset, 'sunrise': LightPalette.sunset,
-    'love': LightPalette.love, 'romantic': LightPalette.love, 'romance': LightPalette.love, 'pink': LightPalette.love, 'valentine': LightPalette.love,
-    'ocean': LightPalette.ocean, 'sea': LightPalette.ocean, 'calm': LightPalette.ocean, 'blue': LightPalette.ocean, 'water': LightPalette.ocean, 'peace': LightPalette.ocean,
-    'forest': LightPalette.forest, 'nature': LightPalette.forest, 'green': LightPalette.forest, 'spring': LightPalette.forest, 'fresh': LightPalette.forest,
-    'fire': LightPalette.fire, 'angry': LightPalette.fire, 'passion': LightPalette.fire, 'hot': LightPalette.fire, 'red': LightPalette.fire, 'diwali': LightPalette.fire,
-    'winter': LightPalette.frost, 'cold': LightPalette.frost, 'snow': LightPalette.frost, 'ice': LightPalette.frost, 'white': LightPalette.frost, 'frozen': LightPalette.frost,
-    'gold': LightPalette.gold, 'golden': LightPalette.gold, 'royal': LightPalette.gold, 'rich': LightPalette.gold, 'luxury': LightPalette.gold, 'yellow': LightPalette.gold,
-    'storm': LightPalette.electric, 'electric': LightPalette.electric, 'energy': LightPalette.electric, 'power': LightPalette.electric,
-    'party': LightPalette.aurora, 'happy': LightPalette.aurora, 'magic': LightPalette.aurora, 'colorful': LightPalette.aurora, 'aurora': LightPalette.aurora,
-    'purple': LightPalette.cosmic, 'violet': LightPalette.cosmic,
+    'night': LightPalette.cosmic,
+    'dark': LightPalette.cosmic,
+    'space': LightPalette.cosmic,
+    'mystic': LightPalette.cosmic,
+    'cosmic': LightPalette.cosmic,
+    'galaxy': LightPalette.cosmic,
+    'midnight': LightPalette.cosmic,
+    'dream': LightPalette.cosmic,
+    'sunset': LightPalette.sunset,
+    'warm': LightPalette.sunset,
+    'evening': LightPalette.sunset,
+    'summer': LightPalette.sunset,
+    'sunrise': LightPalette.sunset,
+    'love': LightPalette.love,
+    'romantic': LightPalette.love,
+    'romance': LightPalette.love,
+    'pink': LightPalette.love,
+    'valentine': LightPalette.love,
+    'ocean': LightPalette.ocean,
+    'sea': LightPalette.ocean,
+    'calm': LightPalette.ocean,
+    'blue': LightPalette.ocean,
+    'water': LightPalette.ocean,
+    'peace': LightPalette.ocean,
+    'forest': LightPalette.forest,
+    'nature': LightPalette.forest,
+    'green': LightPalette.forest,
+    'spring': LightPalette.forest,
+    'fresh': LightPalette.forest,
+    'fire': LightPalette.fire,
+    'angry': LightPalette.fire,
+    'passion': LightPalette.fire,
+    'hot': LightPalette.fire,
+    'red': LightPalette.fire,
+    'diwali': LightPalette.fire,
+    'winter': LightPalette.frost,
+    'cold': LightPalette.frost,
+    'snow': LightPalette.frost,
+    'ice': LightPalette.frost,
+    'white': LightPalette.frost,
+    'frozen': LightPalette.frost,
+    'gold': LightPalette.gold,
+    'golden': LightPalette.gold,
+    'royal': LightPalette.gold,
+    'rich': LightPalette.gold,
+    'luxury': LightPalette.gold,
+    'yellow': LightPalette.gold,
+    'storm': LightPalette.electric,
+    'electric': LightPalette.electric,
+    'energy': LightPalette.electric,
+    'power': LightPalette.electric,
+    'party': LightPalette.aurora,
+    'happy': LightPalette.aurora,
+    'magic': LightPalette.aurora,
+    'colorful': LightPalette.aurora,
+    'aurora': LightPalette.aurora,
+    'purple': LightPalette.cosmic,
+    'violet': LightPalette.cosmic,
   };
 
   static List<String> tokenize(String text) {
     final words = text.toLowerCase().split(RegExp(r"[^a-z]+")).where((w) => w.isNotEmpty);
-    return [for (final w in words) if (!_stop.contains(w)) w];
+    return [
+      for (final w in words)
+        if (!_stop.contains(w)) w,
+    ];
   }
 
   /// Light stemming so "mountains", "flying", "stars" match keywords.
@@ -137,12 +227,8 @@ class Recommender {
     return null;
   }
 
-  MagicArt artFor(ArtTemplate t, {LightPalette? palette}) => MagicArt(
-        title: t.title,
-        paths: t.build(),
-        palette: palette ?? t.palette,
-        brush: t.brush,
-      );
+  MagicArt artFor(ArtTemplate t, {LightPalette? palette}) =>
+      MagicArt(title: t.title, paths: t.build(), palette: palette ?? t.palette, brush: t.brush);
 
   /// Ranked suggestions for a free-text idea. Always returns something: when
   /// nothing matches literally, it falls back to the detected mood, then to
@@ -150,9 +236,8 @@ class Recommender {
   List<Recommendation> fromImagination(String text, {int limit = 6}) {
     final words = tokenize(text);
     final mood = moodPalette(words);
-    final scored = <(ArtTemplate, double)>[
-      for (final t in library) (t, scoreTemplate(t, words)),
-    ]..sort((a, b) => b.$2.compareTo(a.$2));
+    final scored = <(ArtTemplate, double)>[for (final t in library) (t, scoreTemplate(t, words))]
+      ..sort((a, b) => b.$2.compareTo(a.$2));
     final matched = scored.where((e) => e.$2 >= 1.2).toList();
 
     final out = <Recommendation>[];
@@ -161,35 +246,41 @@ class Recommender {
     if (matched.length >= 2) {
       final picks = _distinctLayers(matched.map((e) => e.$1).take(4).toList());
       if (picks.length >= 2) {
-        out.add(Recommendation(
-          art: composeScene(picks, palette: mood),
-          reason: 'Your whole idea as one scene',
-          score: matched.take(picks.length).fold<double>(0, (s, e) => s + e.$2) + 1,
-          source: RecommendationSource.imagination,
-        ));
+        out.add(
+          Recommendation(
+            art: composeScene(picks, palette: mood),
+            reason: 'Your whole idea as one scene',
+            score: matched.take(picks.length).fold<double>(0, (s, e) => s + e.$2) + 1,
+            source: RecommendationSource.imagination,
+          ),
+        );
       }
     }
 
     for (final (t, s) in matched) {
       if (out.length >= limit) break;
-      out.add(Recommendation(
-        art: artFor(t, palette: mood),
-        reason: 'Matches "${_matchedWord(t, words) ?? t.keywords.first}"',
-        score: s,
-        source: RecommendationSource.imagination,
-      ));
+      out.add(
+        Recommendation(
+          art: artFor(t, palette: mood),
+          reason: 'Matches "${_matchedWord(t, words) ?? t.keywords.first}"',
+          score: s,
+          source: RecommendationSource.imagination,
+        ),
+      );
     }
 
     if (out.length < limit && mood != null) {
       for (final t in library.where((t) => t.palette == mood)) {
         if (out.length >= limit) break;
         if (out.any((r) => r.art.title == t.title)) continue;
-        out.add(Recommendation(
-          art: artFor(t, palette: mood),
-          reason: 'Fits the ${mood.name.toLowerCase()} mood',
-          score: 0.5,
-          source: RecommendationSource.mood,
-        ));
+        out.add(
+          Recommendation(
+            art: artFor(t, palette: mood),
+            reason: 'Fits the ${mood.name.toLowerCase()} mood',
+            score: 0.5,
+            source: RecommendationSource.mood,
+          ),
+        );
       }
     }
 
@@ -198,12 +289,14 @@ class Recommender {
         if (out.length >= math.min(3, limit)) break;
         final t = templateById(id)!;
         if (out.any((r) => r.art.title == t.title)) continue;
-        out.add(Recommendation(
-          art: artFor(t, palette: mood),
-          reason: 'A favourite to start with',
-          score: 0.1,
-          source: RecommendationSource.mood,
-        ));
+        out.add(
+          Recommendation(
+            art: artFor(t, palette: mood),
+            reason: 'A favourite to start with',
+            score: 0.1,
+            source: RecommendationSource.mood,
+          ),
+        );
       }
     }
     return out;
@@ -252,6 +345,8 @@ class Recommender {
     return out;
   }
 
+  static String _cap(String w) => w.isEmpty ? w : '${w[0].toUpperCase()}${w.substring(1)}';
+
   static const _stretchable = {'mountains', 'waves', 'aurora', 'rainbow'};
 
   /// Lays templates out in a portrait frame by layer: sky at the top,
@@ -259,7 +354,7 @@ class Recommender {
   MagicArt composeScene(List<ArtTemplate> parts, {LightPalette? palette}) {
     const aspect = 0.75; // portrait frame
     final slots = <ArtLayer, Rect>{
-      ArtLayer.sky: const Rect.fromLTWH(0.5, 0.0, 0.45, 0.32),
+      ArtLayer.sky: const Rect.fromLTWH(0.42, 0.0, 0.55, 0.36),
       ArtLayer.center: const Rect.fromLTWH(0.25, 0.3, 0.5, 0.36),
       ArtLayer.ground: const Rect.fromLTWH(0.0, 0.62, 1.0, 0.38),
     };
@@ -280,16 +375,23 @@ class Recommender {
           ? rect
           : Rect.fromCenter(center: rect.center, width: w, height: w * aspect);
       for (final p in t.build()) {
-        paths.add(ArtPath(
-          [for (final o in p.points) Offset(unitRect.left + o.dx * unitRect.width, unitRect.top + o.dy * unitRect.height)],
-          color: (p.color + colorShift) % 4,
-          width: p.width,
-        ));
+        paths.add(
+          ArtPath(
+            [
+              for (final o in p.points)
+                Offset(unitRect.left + o.dx * unitRect.width, unitRect.top + o.dy * unitRect.height),
+            ],
+            color: (p.color + colorShift) % 4,
+            width: p.width,
+          ),
+        );
       }
       colorShift++;
     }
-    final names = parts.map((t) => t.title.split(' ').last).toList();
-    final title = names.length == 2 ? '${names[0]} & ${names[1]}' : '${names.take(names.length - 1).join(', ')} & ${names.last}';
+    final names = parts.map((t) => _cap(t.keywords.first)).toList();
+    final title = names.length == 2
+        ? '${names[0]} & ${names[1]}'
+        : '${names.take(names.length - 1).join(', ')} & ${names.last}';
     return MagicArt(
       title: title,
       paths: paths,

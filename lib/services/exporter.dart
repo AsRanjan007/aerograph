@@ -59,7 +59,10 @@ class Exporter {
     }
     _signature(canvas, logicalSize);
     final picture = recorder.endRecording();
-    final img = await picture.toImage((logicalSize.width * pixelRatio).round(), (logicalSize.height * pixelRatio).round());
+    final img = await picture.toImage(
+      (logicalSize.width * pixelRatio).round(),
+      (logicalSize.height * pixelRatio).round(),
+    );
     final data = await img.toByteData(format: ui.ImageByteFormat.png);
     img.dispose();
     return data!.buffer.asUint8List();

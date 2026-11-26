@@ -6,12 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 /// Builds a synthetic upright hand (wrist at bottom). [extended] flags are
 /// index, middle, ring, pinky. Folded fingers curl back toward the palm.
-List<Landmark> hand({
-  required List<bool> extended,
-  bool pinch = false,
-  double angle = 0,
-  double scale = 1,
-}) {
+List<Landmark> hand({required List<bool> extended, bool pinch = false, double angle = 0, double scale = 1}) {
   final pts = List<Landmark>.filled(21, const Landmark(0, 0, 0));
   Landmark at(double x, double y) {
     // rotate around wrist (0.5, 0.8)
@@ -71,8 +66,16 @@ void main() {
 
   test('classification is rotation invariant', () {
     for (final a in [0.0, 0.8, -1.2, math.pi / 2, math.pi]) {
-      expect(classifyPose(hand(extended: [true, false, false, false], angle: a)).pose, HandPose.point, reason: 'angle $a');
-      expect(classifyPose(hand(extended: [true, true, true, true], angle: a)).pose, HandPose.openPalm, reason: 'angle $a');
+      expect(
+        classifyPose(hand(extended: [true, false, false, false], angle: a)).pose,
+        HandPose.point,
+        reason: 'angle $a',
+      );
+      expect(
+        classifyPose(hand(extended: [true, true, true, true], angle: a)).pose,
+        HandPose.openPalm,
+        reason: 'angle $a',
+      );
     }
   });
 
