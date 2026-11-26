@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1600 900" width="1600" height="900">
+  <title>Aerograph logo with author credit</title>
+  <defs>
+    <linearGradient id="word" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#C084FC"/>
+      <stop offset="0.5" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#38BDF8"/>
+    </linearGradient>
+    <linearGradient id="arg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A66BFF"/>
+      <stop offset="0.55" stop-color="#7C6CF6"/>
+      <stop offset="1" stop-color="#4C8DF6"/>
+    </linearGradient>
+    <filter id="soft" x="-10%" y="-40%" width="120%" height="180%">
+      <feGaussianBlur stdDeviation="10" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="1600" height="900" fill="#07061A"/>
+  <image href="aerograph_icon.svg" x="150" y="210" width="420" height="420"/>
+  <text x="640" y="430" font-family="Poppins, Montserrat, 'Helvetica Neue', Arial, sans-serif" font-weight="700" font-size="150" letter-spacing="6" fill="url(#word)" filter="url(#soft)">Aerograph</text>
+  <text x="646" y="510" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-weight="400" font-size="34" letter-spacing="7" fill="#C7D2FE" fill-opacity="0.85">PAINT THE AIR · TOUCH NOTHING</text>
+  <line x1="646" y1="580" x2="1450" y2="580" stroke="#8B5CF6" stroke-opacity="0.35" stroke-width="2"/>
+  <!-- author credit with AR signature mark -->
+  <g transform="translate(640 600) scale(0.42)">
+    <g fill="url(#arg)">
+      <path d="M118 96 C 96 84, 66 92, 64 124 C 63 142, 72 154, 84 160 L 90 150 C 80 145, 76 136, 77 124 C 79 104, 98 98, 114 106 Z"/>
+      <path d="M150 62 L 164 62 L 112 222 L 96 222 Z"/>
+      <path d="M84 160 C 100 172, 132 170, 168 158 L 166 148 C 134 158, 104 160, 90 150 Z"/>
+      <path d="M152 62 L 168 62 L 168 222 L 152 222 Z"/>
+      <path d="M160 62 L 196 62 C 236 62, 252 82, 252 106 C 252 132, 232 150, 196 150 L 166 150 L 166 138 L 194 138 C 222 138, 236 126, 236 106 C 236 86, 222 74, 194 74 L 160 74 Z"/>
+      <path d="M196 144 L 212 144 L 258 222 L 240 222 Z"/>
+      <rect x="86" y="218" width="36" height="6" rx="2"/>
+      <rect x="142" y="218" width="36" height="6" rx="2"/>
+      <rect x="232" y="218" width="34" height="6" rx="2"/>
+    </g>
+  </g>
+  <text x="770" y="680" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="34" fill="#A5B4FC" fill-opacity="0.8">Designed &amp; developed by</text>
+  <text x="770" y="730" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-weight="600" font-size="46" fill="#EEF2FF">Ashutosh Ranjan</text>
+</svg>
