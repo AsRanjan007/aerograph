@@ -9,7 +9,14 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
-  final settings = await AppSettings.load();
+  AppSettings settings;
+  try {
+    settings = await AppSettings.load().timeout(const Duration(seconds: 4));
+  } catch (e) {
+    // Preferences storage failing must never stop the app from opening.
+    debugPrint('Aerograph: settings unavailable, using defaults ($e)');
+    settings = AppSettings.memory();
+  }
   runApp(AerographApp(settings: settings));
 }
 

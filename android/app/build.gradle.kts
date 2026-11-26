@@ -30,9 +30,17 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            // Signing with the debug keys for now so the APK can be sideloaded for testing.
+            // Replace with an upload keystore before publishing to Google Play.
             signingConfig = signingConfigs.getByName("debug")
+
+            // Code shrinking is off: several plugins (shared_preferences via package:jni,
+            // MediaPipe via JNI) look up Java classes by name at runtime, and R8 renaming
+            // them made the release build fail at launch. If shrinking is re-enabled,
+            // proguard-rules.pro holds the keep rules those lookups need.
+            isMinifyEnabled = false
+            isShrinkResources = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 }

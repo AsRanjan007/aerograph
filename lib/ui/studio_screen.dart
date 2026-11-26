@@ -476,6 +476,8 @@ class _StudioScreenState extends State<StudioScreen> with TickerProviderStateMix
                 ),
                 if (_noHandSeconds >= 3 && _tracker.status == TrackerStatus.running && _magic == null)
                   _Hint(gesture: _s.drawGesture),
+                if (_tracker.status == TrackerStatus.running && _tracker.trackingError != null)
+                  const _TrackingUnavailable(),
                 if (_tracker.status != TrackerStatus.running && _tracker.status != TrackerStatus.starting)
                   _CameraProblem(
                     tracker: _tracker,
@@ -655,6 +657,32 @@ class _Hint extends StatelessWidget {
                     ? 'Hold your hand up to the camera and pinch to paint.'
                     : 'Hold your hand up to the camera and raise your index finger to paint.',
                 style: const TextStyle(color: Brand.ink, fontSize: 13),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+class _TrackingUnavailable extends StatelessWidget {
+  const _TrackingUnavailable();
+
+  @override
+  Widget build(BuildContext context) => const Padding(
+    padding: EdgeInsets.fromLTRB(16, 12, 16, 0),
+    child: _Glass(
+      child: Padding(
+        padding: EdgeInsets.all(12),
+        child: Row(
+          children: [
+            Icon(Icons.back_hand_outlined, color: Color(0xFFFDE047)),
+            SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                'Hand tracking could not start on this device. You can still paint by touching the screen.',
+                style: TextStyle(color: Brand.ink, fontSize: 13),
               ),
             ),
           ],
