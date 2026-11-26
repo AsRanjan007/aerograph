@@ -26,7 +26,11 @@ class AppSettings extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     const secure = FlutterSecureStorage();
     final s = AppSettings._(prefs, secure);
-    s._read();
+    try {
+      s._read();
+    } catch (_) {
+      // Corrupt or incompatible stored values: keep defaults.
+    }
     try {
       s._apiKey = await secure.read(key: _kApiKey);
     } catch (_) {
@@ -35,8 +39,8 @@ class AppSettings extends ChangeNotifier {
     return s;
   }
 
-  /// In-memory settings for tests and previews.
-  @visibleForTesting
+  /// In-memory settings: used in tests, and as a fallback when device
+  /// storage is unavailable.
   AppSettings.memory() : _prefs = null, _secure = null;
 
   final SharedPreferences? _prefs;
@@ -93,24 +97,28 @@ class AppSettings extends ChangeNotifier {
   Future<void> _save() async {
     final p = _prefs;
     if (p == null) return;
-    await Future.wait([
-      p.setString('brush', brush.name),
-      p.setInt('color', color.toARGB32()),
-      p.setDouble('width', width),
-      p.setDouble('glow', glow),
-      p.setString('lightMode', lightMode.name),
-      p.setDouble('cameraDim', cameraDim),
-      p.setString('drawGesture', drawGesture.name),
-      p.setString('mirror', mirror.name),
-      p.setBool('depthWidth', depthWidth),
-      p.setBool('showSkeleton', showSkeleton),
-      p.setBool('palmUndo', palmUndo),
-      p.setBool('frontCamera', frontCamera),
-      p.setDouble('smoothing', smoothing),
-      p.setBool('sketchSuggestions', sketchSuggestions),
-      p.setString('claudeModel', claudeModel),
-      p.setBool('onboarded', onboarded),
-    ]);
+    try {
+      await Future.wait([
+        p.setString('brush', brush.name),
+        p.setInt('color', color.toARGB32()),
+        p.setDouble('width', width),
+        p.setDouble('glow', glow),
+        p.setString('lightMode', lightMode.name),
+        p.setDouble('cameraDim', cameraDim),
+        p.setString('drawGesture', drawGesture.name),
+        p.setString('mirror', mirror.name),
+        p.setBool('depthWidth', depthWidth),
+        p.setBool('showSkeleton', showSkeleton),
+        p.setBool('palmUndo', palmUndo),
+        p.setBool('frontCamera', frontCamera),
+        p.setDouble('smoothing', smoothing),
+        p.setBool('sketchSuggestions', sketchSuggestions),
+        p.setString('claudeModel', claudeModel),
+        p.setBool('onboarded', onboarded),
+      ]);
+    } catch (e) {
+      debugPrint('Aerograph: could not save settings ($e)');
+    }
   }
 
   /// Apply a change, notify listeners and persist.
@@ -126,10 +134,14 @@ class AppSettings extends ChangeNotifier {
     notifyListeners();
     final secure = _secure;
     if (secure == null) return;
-    if (_apiKey == null) {
-      await secure.delete(key: _kApiKey);
-    } else {
-      await secure.write(key: _kApiKey, value: _apiKey);
+    try {
+      if (_apiKey == null) {
+        await secure.delete(key: _kApiKey);
+      } else {
+        await secure.write(key: _kApiKey, value: _apiKey);
+      }
+    } catch (e) {
+      debugPrint('Aerograph: secure storage unavailable ($e)');
     }
   }
 }

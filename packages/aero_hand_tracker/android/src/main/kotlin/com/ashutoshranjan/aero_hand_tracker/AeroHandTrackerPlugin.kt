@@ -46,7 +46,12 @@ class AeroHandTrackerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
-        executor.execute { closeLandmarker() }
+        executor.execute {
+            try {
+                closeLandmarker()
+            } catch (_: Throwable) {
+            }
+        }
     }
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
@@ -54,7 +59,10 @@ class AeroHandTrackerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
             "initialize" -> executor.execute { initialize(call, result) }
             "detect" -> executor.execute { detect(call, result) }
             "dispose" -> executor.execute {
-                closeLandmarker()
+                try {
+                    closeLandmarker()
+                } catch (_: Throwable) {
+                }
                 post { result.success(null) }
             }
             else -> result.notImplemented()
@@ -88,7 +96,7 @@ class AeroHandTrackerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
             landmarker = HandLandmarker.createFromOptions(context, options)
             lastTimestamp = 0L
             post { result.success(null) }
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             post { result.error("init_failed", e.message, null) }
         }
     }
@@ -145,7 +153,7 @@ class AeroHandTrackerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
                 "inferenceMs" to (SystemClock.uptimeMillis() - started).toInt(),
             )
             post { result.success(payload) }
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             post { result.error("detect_failed", e.message, null) }
         }
     }

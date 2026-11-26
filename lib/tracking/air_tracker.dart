@@ -53,6 +53,10 @@ class AirTracker extends ChangeNotifier {
   TrackerStatus status = TrackerStatus.starting;
   String? errorMessage;
 
+  /// Set when the hand model could not load; the camera still runs and
+  /// touch painting still works.
+  String? trackingError;
+
   /// Latest pointer. Listen to [pointer] for per-frame updates.
   final ValueNotifier<AirPointer> pointer = ValueNotifier(AirPointer.hidden);
 
@@ -84,7 +88,15 @@ class AirTracker extends ChangeNotifier {
     status = TrackerStatus.starting;
     notifyListeners();
     try {
-      if (!_tracker.isReady) await _tracker.initialize(maxHands: 1);
+      if (!_tracker.isReady) {
+        try {
+          await _tracker.initialize(maxHands: 1);
+          trackingError = null;
+        } catch (e) {
+          trackingError = '$e';
+          debugPrint('Aerograph: hand tracking unavailable: $e');
+        }
+      }
       final cameras = await availableCameras();
       if (cameras.isEmpty) {
         status = TrackerStatus.noCamera;
@@ -160,7 +172,7 @@ class AirTracker extends ChangeNotifier {
   }
 
   Future<void> _onFrame(CameraImage image) async {
-    if (_busy || _disposed) return;
+    if (_busy || _disposed || !_tracker.isReady) return;
     _busy = true;
     final now = DateTime.now().millisecondsSinceEpoch;
     try {
